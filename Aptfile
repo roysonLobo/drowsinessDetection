@@ -1,6 +1,1 @@
-libasound2
-libasound2-plugins
-alsa-utils
-libsndfile1
-libsndfile-dev
-libasound2-dev
+libasound2-dev python-dev python-numpy python-setuptools libsndfile-dev
