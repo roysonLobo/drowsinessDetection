@@ -28,7 +28,7 @@ def prediction():
 
     lbl=['Close','Open']
 
-    model = load_model('models/cnncat2.h5')
+    model = load_model('models/cnnCat2.h5')
     path = os.getcwd()
     cap = cv2.VideoCapture(0)
     font = cv2.FONT_HERSHEY_COMPLEX_SMALL
