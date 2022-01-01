@@ -6,3 +6,4 @@ tensorflow-cpu==2.7.0
 opencv-python-headless
 pygame==2.1.2
 pyalsaaudio==0.9.0
+python==3.8.4
