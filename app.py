@@ -2,7 +2,8 @@ from flask import Flask,render_template,request
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
-from cv2 import *
+# from cv2 import *
+import cv2
 import os
 # from keras.models import load_model
 import numpy as np
