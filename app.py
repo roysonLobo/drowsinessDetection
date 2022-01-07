@@ -30,7 +30,7 @@ def prediction():
 
     model = load_model('models/cnnCat2.h5')
     path = os.getcwd()
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     font = cv2.FONT_HERSHEY_COMPLEX_SMALL
     count=0
     score=0
