@@ -1,24 +1,13 @@
-from flask import Flask,render_template,request
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.models import load_model
-# from cv2 import *
 import cv2
 import os
-# from keras.models import load_model
+from keras.models import load_model
 import numpy as np
-# from pygame import mixer
-import time 
+from pygame import mixer
+import time
 
-app=Flask(__name__)
-@app.route('/')
-def index():
-    return render_template("index.html")
-
-@app.route("/prediction",methods=["POST"])
-def prediction():
-    # mixer.init()
-    # sound = mixer.Sound('alarm.wav')
+def web():
+    mixer.init()
+    sound = mixer.Sound('alarm.wav')
 
     face = cv2.CascadeClassifier('haar cascade files\haarcascade_frontalface_alt.xml')
     leye = cv2.CascadeClassifier('haar cascade files\haarcascade_lefteye_2splits.xml')
@@ -28,7 +17,7 @@ def prediction():
 
     lbl=['Close','Open']
 
-    model = load_model('models/cnnCat2.h5')
+    model = load_model('models/cnncat2.h5')
     path = os.getcwd()
     cap = cv2.VideoCapture(0)
     font = cv2.FONT_HERSHEY_COMPLEX_SMALL
@@ -100,11 +89,11 @@ def prediction():
         if(score>15):
             #person is feeling sleepy so we beep the alarm
             cv2.imwrite(os.path.join(path,'image.jpg'),frame)
-            # try:
-            #     sound.play()
+            try:
+                sound.play()
                 
-            # except:  # isplaying = False
-            #     pass
+            except:  # isplaying = False
+                pass
             if(thicc<16):
                 thicc= thicc+2
             else:
@@ -112,14 +101,11 @@ def prediction():
                 if(thicc<2):
                     thicc=2
             cv2.rectangle(frame,(0,0),(width,height),(0,0,255),thicc) 
-        # else:
-            # sound.stop()
+        else:
+            sound.stop()
         cv2.imshow('frame',frame)
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     cap.release()
-    cv2.destroyAllWindows()  
-    return render_template('index.html')
-if __name__=="__main__":
-    app.run(debug=True)
+    cv2.destroyAllWindows()
