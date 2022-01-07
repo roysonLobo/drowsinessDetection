@@ -31,6 +31,7 @@ def prediction():
     model = load_model('models/cnnCat2.h5')
     path = os.getcwd()
     cap = cv2.VideoCapture(0)
+    # print("cap : ", cap)
     font = cv2.FONT_HERSHEY_COMPLEX_SMALL
     count=0
     score=0
@@ -38,9 +39,12 @@ def prediction():
     rpred=[99]
     lpred=[99]
 
-    while(True):
+    # while(True):
+    while(cap.isOpened()):
         ret, frame = cap.read()
-        height,width = frame.shape[:2] 
+        if ret:
+            assert not isinstance(frame, type(None)), 'frame not found'
+        height,width = frame.shape[:2]
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         
