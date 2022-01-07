@@ -38,7 +38,7 @@ def prediction():
     rpred=[99]
     lpred=[99]
 
-    while(cap.isOpened()):
+    while(True):
         ret, frame = cap.read()
         height,width = frame.shape[:2] 
 
