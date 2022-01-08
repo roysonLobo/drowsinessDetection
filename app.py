@@ -7,7 +7,7 @@ import cv2
 import os
 # from keras.models import load_model
 import numpy as np
-# from pygame import mixer
+from pygame import mixer
 import time 
 
 app=Flask(__name__)
@@ -17,8 +17,8 @@ def index():
 
 @app.route("/prediction",methods=["POST"])
 def prediction():
-    # mixer.init()
-    # sound = mixer.Sound('alarm.wav')
+    mixer.init()
+    sound = mixer.Sound('alarm.wav')
 
     face = cv2.CascadeClassifier('haar cascade files\haarcascade_frontalface_alt.xml')
     leye = cv2.CascadeClassifier('haar cascade files\haarcascade_lefteye_2splits.xml')
@@ -39,11 +39,8 @@ def prediction():
     rpred=[99]
     lpred=[99]
 
-    # while(True):
-    while(cap.isOpened()):
+    while(True):
         ret, frame = cap.read()
-        if ret:
-            assert not isinstance(frame, type(None)), 'frame not found'
         height,width = frame.shape[:2]
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -104,11 +101,11 @@ def prediction():
         if(score>15):
             #person is feeling sleepy so we beep the alarm
             cv2.imwrite(os.path.join(path,'image.jpg'),frame)
-            # try:
-            #     sound.play()
+            try:
+                sound.play()
                 
-            # except:  # isplaying = False
-            #     pass
+            except:  # isplaying = False
+                pass
             if(thicc<16):
                 thicc= thicc+2
             else:
@@ -116,8 +113,8 @@ def prediction():
                 if(thicc<2):
                     thicc=2
             cv2.rectangle(frame,(0,0),(width,height),(0,0,255),thicc) 
-        # else:
-            # sound.stop()
+        else:
+            sound.stop()
         cv2.imshow('frame',frame)
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
