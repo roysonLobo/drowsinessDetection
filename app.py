@@ -2,6 +2,7 @@ from flask import Flask,render_template,request
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.models import load_model
+from datetime import datetime
 # from cv2 import *
 import cv2
 import os
@@ -15,16 +16,17 @@ app=Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/prediction",methods=["POST"])
+@app.route("/prediction",methods=["GET","POST"])
 def prediction():
+    if request.method=='POST':
+        id=request.form.get('id')
+        name=request.form.get('name')
     mixer.init()
     sound = mixer.Sound('alarm.wav')
 
     face = cv2.CascadeClassifier('haar cascade files\haarcascade_frontalface_alt.xml')
     leye = cv2.CascadeClassifier('haar cascade files\haarcascade_lefteye_2splits.xml')
     reye = cv2.CascadeClassifier('haar cascade files\haarcascade_righteye_2splits.xml')
-
-
 
     lbl=['Close','Open']
 
@@ -38,6 +40,20 @@ def prediction():
     thicc=2
     rpred=[99]
     lpred=[99]
+
+    def mark(name):
+            with open('mark.csv','r+') as f:
+                myDataList=f.readlines()
+                nameList=[]
+                idList=[]
+                for line in myDataList:
+                    entry=line.split(',')
+                    nameList.append(entry[0])
+                    idList.append(entry[0])
+                if name not in nameList:
+                    now=datetime.now()
+                    dtString=now.strftime('%H:%M:%S')
+                    f.writelines(f'\n{id},{name},{dtString}')
 
     while(True):
         ret, frame = cap.read()
@@ -101,6 +117,7 @@ def prediction():
         if(score>15):
             #person is feeling sleepy so we beep the alarm
             cv2.imwrite(os.path.join(path,'image.jpg'),frame)
+            mark(name)
             try:
                 sound.play()
                 

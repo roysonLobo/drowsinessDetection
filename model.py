@@ -14,8 +14,8 @@ def generator(dir, gen=image.ImageDataGenerator(rescale=1./255), shuffle=True,ba
 
 BS= 32
 TS=(24,24)
-train_batch= generator('data/train',shuffle=True, batch_size=BS,target_size=TS)
-valid_batch= generator('data/valid',shuffle=True, batch_size=BS,target_size=TS)
+train_batch= generator('train',shuffle=True, batch_size=BS,target_size=TS)
+valid_batch= generator('test',shuffle=True, batch_size=BS,target_size=TS)
 SPE= len(train_batch.classes)//BS
 VS = len(valid_batch.classes)//BS
 print(SPE,VS)
@@ -51,6 +51,6 @@ model = Sequential([
 
 model.compile(optimizer='adam',loss='categorical_crossentropy',metrics=['accuracy'])
 
-model.fit_generator(train_batch, validation_data=valid_batch,epochs=15,steps_per_epoch=SPE ,validation_steps=VS)
+model.fit_generator(train_batch, validation_data=valid_batch,epochs=15,steps_per_epoch=SPE ,shuffle=True,validation_steps=VS)
 
 model.save('models/cnnCat2.h5', overwrite=True)
