@@ -45,15 +45,13 @@ def prediction():
             with open('mark.csv','r+') as f:
                 myDataList=f.readlines()
                 nameList=[]
-                idList=[]
                 for line in myDataList:
                     entry=line.split(',')
                     nameList.append(entry[0])
-                    idList.append(entry[0])
                 if name not in nameList:
                     now=datetime.now()
                     dtString=now.strftime('%H:%M:%S')
-                    f.writelines(f'\n{id},{name},{dtString}')
+                    f.writelines(f'\n{name},{dtString}')
 
     while(True):
         ret, frame = cap.read()
